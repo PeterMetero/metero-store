@@ -17,3 +17,9 @@ app.get('/', (req, res) => res.send('Metero Store Backend Running')); // Define 
 
 const PORT = process.env.PORT || 5000; // Get the server port from environment variables, or use 5000 as the default port
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`)); // Start the server and listen on the specified port, then log the port number
+
+const userRoutes = require('./routes/userRoutes');
+app.use('/api/users', userRoutes); // Use the userRoutes for any routes that start with /api/users
+
+const productRoutes = require('./routes/productRoutes');
+app.use('/api/products', productRoutes); // Use the productRoutes for any routes that start with /api/products

@@ -1,14 +1,14 @@
 {
   "name": "backend",
   "version": "1.0.0",
-  "description": "",
+  "description": "A site for listing products, adding to cart and user reviews (E-Commerce)",
   "main": "server.js",
   "scripts": {
   "start": "node server.js",
   "dev": "nodemon server.js"
 },
   "keywords": [],
-  "author": "",
+  "author": "Peter Metero",
   "license": "ISC",
   "type": "commonjs",
   "dependencies": {
