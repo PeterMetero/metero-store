@@ -28,6 +28,12 @@ app.use('/api/users', userRoutes);
 const productRoutes = require('./routes/productRoutes');
 app.use('/api/products', productRoutes);
 
+const orderRoutes = require('./routes/orderRoutes');
+app.use('/api/orders', orderRoutes);
+
+const reviewRoutes = require('./routes/reviewRoutes');
+app.use('/api/reviews', reviewRoutes);
+
 // Basic health check
 app.get('/', (req, res) => res.send('Metero Store Backend Running'));
 
