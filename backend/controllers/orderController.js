@@ -21,7 +21,8 @@ exports.addToCart = async (req, res) => {
       cart = new Order({
         user: req.user.id,
         products: [{ product: productId, quantity }],
-        total: product.price * quantity
+        total: product.price * quantity,
+        status: 'Cart'
       });
     } else {
       // Check if product already in cart
@@ -58,5 +59,32 @@ exports.getCart = async (req, res) => {
     res.json(cart);
   } catch (err) {
     res.status(500).json({ msg: 'Server error' });
+  }
+};
+
+const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
+
+exports.checkout = async (req, res) => {
+  try {
+    const cart = await Order.findOne({ user: req.user.id, status: 'Cart' });
+    if (!cart || cart.products.length === 0) return res.status(400).json({ msg: 'Cart empty' });
+
+    // Create Stripe PaymentIntent (simulate payment)
+    const paymentIntent = await stripe.paymentIntents.create({
+      amount: Math.round(cart.total * 100), // in cents
+      currency: 'usd', // or 'kes' if Stripe supports in Kenya via Paystack
+      metadata: { orderId: cart._id.toString() }
+    });
+
+    // Update order to Pending (simulate success for now)
+    cart.status = 'Pending';
+    await cart.save();
+
+    res.json({
+      clientSecret: paymentIntent.client_secret, // Send to frontend for confirmation
+      order: cart
+    });
+  } catch (err) {
+    res.status(500).json({ msg: err.message });
   }
 };
